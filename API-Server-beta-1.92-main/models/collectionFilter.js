@@ -10,29 +10,25 @@ export default class CollectionFilter {
         if (this.params == null) {
             return this.params;
         }
-        if (this.params.Key != null) {
-            this.Filter(this.params.value);
+        else {
+            this.Filter();
         }
     }
 
-    Sort() {
+    sort() {
 
     }
 
-    LimitOffset() {
+    limitOffset() {
 
     }
 
-    Filter(params) {
-        // use function valueMatch
-        let results;
-        for (let obj of this.objects) {
-            results.push(valueMatch(obj, params));
-        }
+    Filter() {
+        const results = this.objects.filter(obj => JSON.stringify(obj).toLowerCase().includes(this.params.value, 1));
         return results;
     }
 
-    Fields() {
+    fields() {
 
     }
 }
