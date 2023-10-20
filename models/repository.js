@@ -135,7 +135,6 @@ export default class Repository {
         let collectionFilter = new CollectionFilter(this.objects(), params, this.model);
         let objectsList = collectionFilter.get();
         //let objectsList = this.objects();
-        objectsList = this.objects();
         let bindedDatas = [];
         if (objectsList)
             for (let data of objectsList) {
