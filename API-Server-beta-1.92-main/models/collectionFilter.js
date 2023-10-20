@@ -1,28 +1,43 @@
-import Model from './model.js';
-
-export default class CollectionFilter extends Model {
+export default class CollectionFilter {
     constructor(objects, params, model) {
         this.objects = objects;
         this.model = model;
         this.params = params;
     }
 
-    static Filter() {
+    get() {
+
+        if (this.params == null) {
+            return this.params;
+        }
+        if (this.params.Key != null) {
+            this.Filter(this.params.value);
+        }
+    }
+
+    Sort() {
 
     }
 
-    static Sort() {
+    LimitOffset() {
 
     }
 
-    static LimitOffset() {
-
+    Filter(params) {
+        // use function valueMatch
+        let results;
+        for (let obj of this.objects) {
+            results.push(valueMatch(obj, params));
+        }
+        return results;
     }
 
-    static Fields() {
+    Fields() {
 
     }
 }
+
+
 
 function valueMatch(value, searchValue) {
     try {
