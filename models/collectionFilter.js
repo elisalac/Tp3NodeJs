@@ -12,16 +12,16 @@ export default class CollectionFilter {
         }
         else {
             //return this.Filter();
-            return this.Sort();
+            return this.Fields();
         }
     }
 
     Sort() {
         let key = Object.values(this.params)[0];
-        return this.objects.sort((a, b) => innerCompare(a, b));
+        return this.objects.sort((a, b) => innerCompare(a[key], b[key]));
     }
 
-    limitOffset() {
+    LimitOffset() {
 
     }
 
@@ -51,8 +51,17 @@ export default class CollectionFilter {
         return results;
     }
 
-    fields() {
-
+    Fields() {
+        let results = [];
+        let key = Object.values(this.params)[0];
+        let previousValue;
+        for (let obj of this.objects) {
+            if (previousValue != obj[key]) {
+                results.push(obj[key])
+            }
+            previousValue = obj[key];
+        }
+        return results;
     }
 }
 
@@ -77,5 +86,5 @@ function innerCompare(x, y) {
     if ((typeof x) === 'string')
         return x.localeCompare(y);
     else
-        return this.compareNum(x, y);
+        return compareNum(x, y);
 }
