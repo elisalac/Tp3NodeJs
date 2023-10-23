@@ -11,8 +11,18 @@ export default class CollectionFilter {
             return this.objects;
         }
         else {
-            //return this.Filter();
-            return this.Fields();
+            if (this.params.fields != null) {
+                return this.Fields();
+            }
+            if (this.params.limit != null && this.params.offset != null) {
+                return this.LimitOffset();
+            }
+            if (this.params.sort != null) {
+                return this.Sort();
+            }
+            else {
+                return this.Filter();
+            }
         }
     }
 
@@ -22,7 +32,10 @@ export default class CollectionFilter {
     }
 
     LimitOffset() {
+        const limit = this.params.limit ? parseInt(this.params.limit) : undefined;
+        const offset = this.params.offset ? parseInt(this.params.offset) : 0;
 
+        return this.objects.slice(offset, limit);
     }
 
     Filter() {
@@ -57,7 +70,9 @@ export default class CollectionFilter {
         let previousValue;
         for (let obj of this.objects) {
             if (previousValue != obj[key]) {
-                results.push(obj[key])
+                let resultObj = {};
+                resultObj[key] = previousValue;
+                results.push(resultObj);
             }
             previousValue = obj[key];
         }
@@ -65,17 +80,6 @@ export default class CollectionFilter {
     }
 }
 
-
-
-function valueMatch(value, searchValue) {
-    try {
-        let exp = '^' + searchValue.toLowerCase().replace(/\*/g, '.*') + '$';
-        return new RegExp(exp).test(value.toString().toLowerCase());
-    } catch (error) {
-        console.log(error);
-        return false;
-    }
-}
 function compareNum(x, y) {
     if (x === y) return 0;
     else if (x < y) return -1;
